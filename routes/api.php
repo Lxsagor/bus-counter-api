@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Admin\BusController;
+use App\Http\Controllers\Api\Admin\CounterController;
+use App\Http\Controllers\Api\Admin\ScheduleBusController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegController;
 use App\Http\Controllers\Api\SuperAdmin\CompanyController;
@@ -35,6 +38,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/company/{comapnyId}/users', UserController::class);
         Route::apiResource('/divisions', DivisionController::class);
         Route::apiResource('/divisions/{divisionId}/districts', DistrictController::class);
-
+        Route::apiResource('/counters', CounterController::class);
+        Route::apiResource('/buses', BusController::class);
+        Route::apiResource('/schedulesbuses', ScheduleBusController::class);
     });
 });

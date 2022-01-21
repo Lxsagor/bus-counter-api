@@ -15,10 +15,10 @@ class User extends Authenticatable
 
     protected $guarded = [];
 
-    public const SUPER_ADMIN = 1;
-    public const ADMIN       = 2;
-    public const COUNTER     = 3;
-    public const USER        = 4;
+    public const SUPER_ADMIN     = 1;
+    public const ADMIN           = 2;
+    public const COUNTER_MANAGER = 3;
+    public const USER            = 4;
 
     protected $hidden = [
         'password',
@@ -39,5 +39,10 @@ class User extends Authenticatable
     public function company()
     {
         return $this->belongsTo(Company::class);
+    }
+
+    public function counter()
+    {
+        return $this->belongsTo(User::class);
     }
 }

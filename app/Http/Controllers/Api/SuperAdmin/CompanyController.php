@@ -117,7 +117,7 @@ class CompanyController extends Controller
                 return response([
                     'status'  => 'success',
                     'message' => 'Company deleted successfully',
-                ], 202);
+                ], 200);
             } else {
                 return itemNotFound();
             }

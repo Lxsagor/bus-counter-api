@@ -6,9 +6,14 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class Profile extends Model
+class Bus extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    public function schedulesbuses()
+    {
+        return $this->hasMany(ScheduleBus::class);
+    }
 }
