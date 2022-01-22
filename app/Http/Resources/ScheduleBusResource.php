@@ -15,12 +15,13 @@ class ScheduleBusResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'bus_no'        => $this->bus_no,
-            'start_counter' => $this->start_counter,
-            'end_counter'   => $this->end_counter,
-            'mid_counters'  => $this->mid_counters,
-            'date'          => $this->date,
-            'time'          => $this->time,
+            'id'               => $this->id,
+            'bus_id'           => $this->bus_id,
+            'bus_no'           => $this->bus_no,
+            'start_counter_id' => $this->start_counter_id,
+            'end_counter_id'   => $this->end_counter_id,
+            'mid_counters_id'  => $this->mid_counters_id,
+            'date_time'        => $this->date_time,
 
         ];
     }

@@ -2,9 +2,12 @@
 
 use App\Http\Controllers\Api\Admin\BusController;
 use App\Http\Controllers\Api\Admin\CounterController;
+use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
+use App\Http\Controllers\Api\Admin\StaffController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegController;
+use App\Http\Controllers\Api\Helper\HelperController;
 use App\Http\Controllers\Api\SuperAdmin\CompanyController;
 use App\Http\Controllers\Api\SuperAdmin\DistrictController;
 use App\Http\Controllers\Api\SuperAdmin\DivisionController;
@@ -41,5 +44,8 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/counters', CounterController::class);
         Route::apiResource('/buses', BusController::class);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
+        Route::apiResource('/drivers', DriverController::class);
+        Route::apiResource('/staffs', StaffController::class);
+        Route::post('/file', [HelperController::class, 'fileUploader']);
     });
 });

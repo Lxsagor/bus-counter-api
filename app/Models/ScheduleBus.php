@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -14,22 +13,16 @@ class ScheduleBus extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'date'         => 'datetime',
-        'time'         => 'datetime',
+        'date_time'    => 'datetime',
         'mid_counters' => 'array',
-
     ];
 
-    protected $appends = ['date', 'time'];
+    // protected $appends = ['date_time'];
 
-    public function getDateAttribute()
-    {
-        return Carbon::parse($this->date)->addHours(6);
-    }
-    public function getTimeAttribute()
-    {
-        return Carbon::parse($this->time)->format('H');
-    }
+    // public function getDateTimeAttribute()
+    // {
+    //     return Carbon::parse($this->date)->addHours(6);
+    // }
 
     public function bus()
     {

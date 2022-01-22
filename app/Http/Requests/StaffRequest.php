@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ScheduleBusRequest extends FormRequest
+class StaffRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,17 +26,13 @@ class ScheduleBusRequest extends FormRequest
     public function rules()
     {
         return [
-            'bus_no'           => 'required|exists:buses,bus_no',
-            'start_counter_id' => 'required|exists:counters,_id',
-            'end_counter_id'   => 'required|exists:counters,_id',
-            'mid_counters_id'  => 'required|exists:counters,_id|array',
-            'date_time'        => 'required|date',
-
-            // 'time'          => 'required|date_format:H:i',
-
+            'image'   => 'required',
+            'name'    => 'required|regex:/^[a-zA-Z-. ]+$/u',
+            'address' => 'required',
+            'phone'   => 'required|regex:/(01[3-9]\d{8})$/',
+            'docs'    => 'required|array',
         ];
     }
-
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

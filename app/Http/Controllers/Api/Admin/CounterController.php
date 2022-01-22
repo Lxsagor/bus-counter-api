@@ -121,7 +121,7 @@ class CounterController extends Controller
                 return response([
                     'status'  => 'success',
                     'message' => 'Counter deleted successfully',
-                ], 202);
+                ], 200);
             } else {
                 return itemNotFound();
             }

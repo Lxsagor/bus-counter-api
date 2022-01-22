@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class BusResource extends JsonResource
+class FileResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -15,12 +15,7 @@ class BusResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'         => $this->id,
-            'bus_no'     => $this->bus_no,
-            'bus_reg_no' => $this->bus_reg_no,
-            'chesis_no'  => $this->chesis_no,
-            'bus_type'   => $this->bus_type,
-            'total_seat' => $this->total_seat,
+            'file' => $this->file,
         ];
     }
 }

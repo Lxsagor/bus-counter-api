@@ -29,13 +29,13 @@ class ScheduleBusController extends Controller
     {
         try {
             $scheduleBus = ScheduleBus::create([
-                'bus_id'        => request('bus_id'),
-                'bus_no'        => request('bus_no'),
-                'start_counter' => request('start_counter'),
-                'end_counter'   => request('end_counter'),
-                'mid_counters'  => request('mid_counters'),
-                'date'          => request('date'),
-                'time'          => request('time'),
+                'bus_id'           => request('bus_id'),
+                'bus_no'           => request('bus_no'),
+                'start_counter_id' => request('start_counter_id'),
+                'end_counter_id'   => request('end_counter_id'),
+                'mid_counters_id'  => request('mid_counters_id'),
+                'date_time'        => request('date_time'),
+                // 'time'          => request('time'),
 
             ]);
             return response([
@@ -57,13 +57,13 @@ class ScheduleBusController extends Controller
 
             if ($scheduleBus) {
 
-                $scheduleBus->bus_id        = request('bus_id') ?? $scheduleBus->bus_id;
-                $scheduleBus->bus_no        = request('bus_no') ?? $scheduleBus->bus_no;
-                $scheduleBus->start_counter = request('start_counter') ?? $scheduleBus->start_counter;
-                $scheduleBus->end_counter   = request('end_counter') ?? $scheduleBus->end_counter;
-                $scheduleBus->mid_counters  = request('mid_counters') ?? $scheduleBus->mid_counters;
-                $scheduleBus->date          = request('date') ?? $scheduleBus->date;
-                $scheduleBus->time          = request('time') ?? $scheduleBus->time;
+                $scheduleBus->bus_id           = request('bus_id') ?? $scheduleBus->bus_id;
+                $scheduleBus->bus_no           = request('bus_no') ?? $scheduleBus->bus_no;
+                $scheduleBus->start_counter_id = request('start_counter_id') ?? $scheduleBus->start_counter_id;
+                $scheduleBus->end_counter_id   = request('end_counter_id') ?? $scheduleBus->end_counter_id;
+                $scheduleBus->mid_counters_id  = request('mid_counters_id') ?? $scheduleBus->mid_counters_id;
+                $scheduleBus->date_time        = request('date_time') ?? $scheduleBus->date_time;
+                // $scheduleBus->time          = request('time') ?? $scheduleBus->time;
 
                 $scheduleBus->update();
 
