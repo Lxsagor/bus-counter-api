@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\Admin\CounterController;
 use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
 use App\Http\Controllers\Api\Admin\StaffController;
+use App\Http\Controllers\Api\Auth\ForgetPassController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegController;
 use App\Http\Controllers\Api\Helper\HelperController;
@@ -29,6 +30,10 @@ Route::prefix('v1')->group(function () {
     Route::prefix('auth')->group(function () {
         Route::post('/login', [LoginController::class, 'login']);
         Route::post('/register', [RegController::class, 'register']);
+        Route::post('/forget', [ForgetPassController::class, 'forget']);
+        Route::post('/confirm', [ForgetPassController::class, 'confirm']);
+        Route::patch('/resend', [ForgetPassController::class, 'resend']);
+        Route::patch('/changePass', [ForgetPassController::class, 'changePass']);
 
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('/logout', [LoginController::class, 'logout']);
@@ -37,6 +42,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
+        Route::post('/file', [HelperController::class, 'fileUploader']);
         Route::apiResource('/companies', CompanyController::class);
         Route::apiResource('/company/{comapnyId}/users', UserController::class);
         Route::apiResource('/divisions', DivisionController::class);
@@ -46,6 +52,5 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
-        Route::post('/file', [HelperController::class, 'fileUploader']);
     });
 });
