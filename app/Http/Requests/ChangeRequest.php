@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class LoginRequest extends FormRequest
+class ChangeRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,11 +26,9 @@ class LoginRequest extends FormRequest
     public function rules()
     {
         return [
-            'phone'    => 'required|exists:users|regex:/(01[3-9]\d{8})$/',
-            'password' => 'required|min:6',
+            'password' => 'required|confirm|min:6',
         ];
     }
-
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(

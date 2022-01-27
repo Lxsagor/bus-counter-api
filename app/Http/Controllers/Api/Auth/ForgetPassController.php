@@ -45,7 +45,7 @@ class ForgetPassController extends Controller
                 return response([
                     'status'  => 'success',
                     'message' => 'OTP send successfully',
-                    // 'data'    => $otp,
+                    'data'    => $otp->phone,
                 ], 200);
 
             } else {
