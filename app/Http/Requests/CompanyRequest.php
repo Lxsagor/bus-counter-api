@@ -29,7 +29,7 @@ class CompanyRequest extends FormRequest
             'name'           => 'required|regex:/^[a-zA-Z-. ]+$/u',
             'email'          => 'required|unique:companies|email:rfc,dns',
             'phone'          => 'required|unique:companies|regex:/(01[3-9]\d{8})$/',
-            'no_of_counters' => 'required',
+            'no_of_counters' => 'required|numeric',
             'sub_start_date' => 'required|date',
             'sub_end_date'   => 'required|date',
         ];

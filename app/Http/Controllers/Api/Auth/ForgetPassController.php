@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\ChangepassRequest;
 use App\Http\Requests\ForgetPassRequest;
 use App\Http\Resources\UserResource;
 use App\Models\Otp;
@@ -19,33 +20,27 @@ class ForgetPassController extends Controller
 
             $user = User::where('phone', request('phone'))->first();
 
-            // dd($user);
-
             if ($user) {
-                $otp = Otp::where('phone', $user->phone)->first();
-                if ($otp) {
-                    $otp->phone = $user->phone;
-                    $otp->code  = $this->generateRandomString(6);
-                    $otp->type  = Otp::FORGET;
-                    $otp->update();
-                } else {
-                    $data = [
-                        'phone' => $user->phone,
-                        'code'  => $this->generateRandomString(6),
-                        'type'  => Otp::FORGET,
+                $otp = Otp::where('phone', request('phone'))->first();
 
-                    ];
-
-                    Otp::create($data);
+                if (!empty($otp)) {
+                    $otp->delete();
                 }
+                $data = [
+                    'phone' => $user->phone,
+                    'code'  => $this->generateRandomString(6),
+                    'type'  => Otp::FORGET,
 
+                ];
+
+                Otp::create($data);
                 $user->password_reset_request = true;
                 $user->update();
 
                 return response([
                     'status'  => 'success',
                     'message' => 'OTP send successfully',
-                    'data'    => $otp->phone,
+                    'data'    => $user->phone,
                 ], 200);
 
             } else {
@@ -63,10 +58,14 @@ class ForgetPassController extends Controller
         try {
 
             $otp = Otp::where('phone', request('phone'))->where('code', request('code'))->first();
+
+            // if (($otp->updated_at->addHour(1)) < (now())) {
+            //     return itemNotFound('Your code is expired! Please resend code.', 404);
+            // }
             if ($otp) {
-                $user                         = User::where('phone', $otp->phone)->first();
-                $user->password_reset_request = false;
-                $user->update();
+                $user = User::where('phone', $otp->phone)->first();
+                // $user->password_reset_request = 'matched';
+                // $user->update();
                 $otp->delete();
                 return response([
                     'status'  => 'success',
@@ -109,13 +108,14 @@ class ForgetPassController extends Controller
         }
     }
 
-    public function changePass()
+    public function changePass(ChangepassRequest $request)
     {
         try {
-            $user = User::where('phone', request('phone'))->first();
+            $user = User::where('phone', request('phone'))->where('password_reset_request' == true)->first();
 
             if ($user) {
-                $user->password = Hash::make(request('password'));
+                $user->password               = Hash::make(request('password'));
+                $user->password_reset_request = false;
                 $user->update();
                 return response([
                     'status'  => 'success',

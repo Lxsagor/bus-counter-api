@@ -6,7 +6,7 @@ use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class ChangeRequest extends FormRequest
+class ChangepassRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,9 @@ class ChangeRequest extends FormRequest
     public function rules()
     {
         return [
-            'password' => 'required|confirm|min:6',
+            'phone'                 => 'required',
+            'password'              => 'required|min:6|confirmed',
+            'password_confirmation' => 'required',
         ];
     }
     protected function failedValidation(Validator $validator)
