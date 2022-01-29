@@ -31,7 +31,7 @@ class CompanyRequest extends FormRequest
             'phone'          => 'required|unique:companies|regex:/(01[3-9]\d{8})$/',
             'no_of_counters' => 'required|numeric',
             'sub_start_date' => 'required|date',
-            'sub_end_date'   => 'required|date',
+            'sub_end_date'   => 'required|date|after:sub_start_date',
         ];
 
         if (request()->method() === 'PATCH') {
