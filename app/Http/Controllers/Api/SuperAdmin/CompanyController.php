@@ -127,4 +127,31 @@ class CompanyController extends Controller
         }
 
     }
+
+    public function search()
+    {
+        // dd(request()->all());
+        try {
+            $data = request('keyword');
+
+            $companies = Company::where('name', 'like', "%{$data}%")
+                ->orWhere('email', 'like', "%{$data}%")
+                ->orWhere('phone', 'like', "%{$data}%")
+                ->orWhere('no_of_counters', 'like', "%{$data}%")
+                ->orWhere('sub_start_date', 'like', "%{$data}%")
+                ->orWhere('sub_end_date', 'like', "%{$data}%")
+                ->get();
+
+            if ($companies) {
+                return response([
+                    'status' => 'success',
+                    'data'   => $companies,
+                ], 200);
+            } else {
+                return itemNotFound();
+            }
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 }

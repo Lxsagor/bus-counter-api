@@ -44,7 +44,9 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/file', [HelperController::class, 'fileUploader']);
         Route::apiResource('/companies', CompanyController::class);
+        Route::post('/company-search', [CompanyController::class, 'search']);
         Route::apiResource('/company/{comapnyId}/users', UserController::class);
+        Route::patch('/company/{comapnyId}/users/suspend/{id}', [UserController::class, 'suspend']);
         Route::apiResource('/divisions', DivisionController::class);
         Route::apiResource('/divisions/{divisionId}/districts', DistrictController::class);
         Route::apiResource('/counters', CounterController::class);

@@ -33,6 +33,7 @@ class UserController extends Controller
                 'name'       => request('name'),
                 'email'      => request('email'),
                 'phone'      => request('phone'),
+                'status'     => 'active',
                 'password'   => Hash::make(request('password')),
             ]);
 
@@ -101,6 +102,39 @@ class UserController extends Controller
                     'status'  => 'success',
                     'message' => 'User deleted successfully',
                 ], 202);
+            } else {
+                return itemNotFound();
+            }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+
+    public function suspend($companyId, $id)
+    {
+        try {
+            $user = User::where('_id', $id)->where('company_id', $companyId)->where('role_id', User::ADMIN)->first();
+
+            if ($user) {
+                if ($user->status === 'suspend') {
+                    $user->status = 'active';
+                    $user->update();
+                    return response([
+                        'status'  => 'success',
+                        'message' => 'User activated successfully',
+                        'data'    => UserResource::make($user),
+                    ], 202);
+                } else {
+                    $user->status = 'suspend';
+                    $user->update();
+                    return response([
+                        'status'  => 'success',
+                        'message' => 'User suspended successfully',
+                        'data'    => UserResource::make($user),
+                    ], 202);
+                }
+
             } else {
                 return itemNotFound();
             }
