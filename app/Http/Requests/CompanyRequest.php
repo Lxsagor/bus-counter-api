@@ -34,10 +34,10 @@ class CompanyRequest extends FormRequest
             'sub_end_date'   => 'required|date|after:sub_start_date',
         ];
 
-        if (request()->method() === 'PATCH') {
-            $data['email'] = 'unique:companies|email:rfc,dns';
-            $data['phone'] = 'unique:companies|regex:/(01[3-9]\d{8})$/';
-        }
+        // if (request()->method() === 'PATCH') {
+        //     $data['email'] = 'unique:companies|email:rfc,dns';
+        //     $data['phone'] = 'unique:companies|regex:/(01[3-9]\d{8})$/';
+        // }
 
         return $data;
     }

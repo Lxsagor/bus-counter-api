@@ -24,6 +24,7 @@ class CompanyResource extends JsonResource
             'sub_end_date'              => $this->sub_end_date,
             'sub_start_date_bangladesh' => $this->sub_start_date_bangladesh,
             'sub_end_date_bangladesh'   => $this->sub_end_date_bangladesh,
+            'sub_remaining'             => $this->sub_remaining,
 
         ];
     }

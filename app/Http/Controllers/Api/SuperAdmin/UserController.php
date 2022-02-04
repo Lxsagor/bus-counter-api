@@ -143,5 +143,36 @@ class UserController extends Controller
             return serverError($e);
         }
     }
+    public function search($companyId)
+    {
+        try {
+            $users = User::where('company_id', $companyId)->where('role_id', User::ADMIN)->first();
+            // dd($users);
+            if ($users) {
+                $data   = request('keyword');
+                $admins = null;
+
+                if ($data) {
+                    $admins = User::where('name', 'like', "%{$data}%")
+                        ->orWhere('email', 'like', "%{$data}%")
+                        ->orWhere('phone', 'like', "%{$data}%")
+
+                        ->paginate();
+                } else {
+                    $admins = User::paginate();
+                }
+
+                return response([
+                    'status' => 'success',
+                    'data'   => UserResource::collection($admins)->response()->getData(),
+                ], 200);
+            } else {
+                return itemNotFound();
+            }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 
 }

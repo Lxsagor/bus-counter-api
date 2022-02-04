@@ -61,7 +61,7 @@ class CompanyController extends Controller
             return serverError($e);
         }
     }
-    public function update(CompanyRequest $request, $id)
+    public function update($id)
     {
         try {
             $company = Company::where('_id', $id)->first();
@@ -132,24 +132,26 @@ class CompanyController extends Controller
     {
         // dd(request()->all());
         try {
-            $data = request('keyword');
+            $data      = request('keyword');
+            $companies = null;
 
-            $companies = Company::where('name', 'like', "%{$data}%")
-                ->orWhere('email', 'like', "%{$data}%")
-                ->orWhere('phone', 'like', "%{$data}%")
-                ->orWhere('no_of_counters', 'like', "%{$data}%")
-                ->orWhere('sub_start_date', 'like', "%{$data}%")
-                ->orWhere('sub_end_date', 'like', "%{$data}%")
-                ->get();
-
-            if ($companies) {
-                return response([
-                    'status' => 'success',
-                    'data'   => $companies,
-                ], 200);
+            if ($data) {
+                $companies = Company::where('name', 'like', "%{$data}%")
+                    ->orWhere('email', 'like', "%{$data}%")
+                    ->orWhere('phone', 'like', "%{$data}%")
+                    ->orWhere('no_of_counters', 'like', "%{$data}%")
+                    ->orWhere('sub_start_date', 'like', "%{$data}%")
+                    ->orWhere('sub_end_date', 'like', "%{$data}%")
+                    ->paginate();
             } else {
-                return itemNotFound();
+                $companies = Company::paginate();
             }
+
+            return response([
+                'status' => 'success',
+                'data'   => CompanyResource::collection($companies)->response()->getData(),
+            ], 200);
+
         } catch (Exception $e) {
             return serverError($e);
         }

@@ -23,7 +23,7 @@ class Company extends Model
         'sub_end_date'   => 'datetime',
     ];
 
-    protected $appends = ['sub_start_date_bangladesh', 'sub_end_date_bangladesh'];
+    protected $appends = ['sub_start_date_bangladesh', 'sub_end_date_bangladesh', 'sub_remaining'];
 
     public function getSubStartDateBangladeshAttribute()
     {
@@ -33,5 +33,13 @@ class Company extends Model
     public function getSubEndDateBangladeshAttribute()
     {
         return Carbon::parse($this->sub_end_date)->addHours(6);
+    }
+    public function getSubRemainingAttribute()
+    {
+
+        $today        = Carbon::now();
+        $sub_end_date = Carbon::parse($this->sub_end_date);
+        $remaining    = $today->diffInDays($sub_end_date, false);
+        return $remaining;
     }
 }
