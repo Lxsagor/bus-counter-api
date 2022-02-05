@@ -16,7 +16,7 @@ class CounterController extends Controller
     public function index()
     {
         try {
-            $counters = CounterResource::collection(Counter::with(['district', 'counter_managers'])->paginate())->response()->getData();
+            $counters = CounterResource::collection(Counter::with(['district', 'division', 'counter_managers'])->paginate())->response()->getData();
 
             return response([
                 "status" => "success",
@@ -31,6 +31,7 @@ class CounterController extends Controller
     public function store(CounterRequest $request)
     {
         try {
+            // dd(User::COUNTER_MANAGER);
 
             $counter = Counter::create([
                 'company_id'  => auth()->user()->company_id,
@@ -48,6 +49,7 @@ class CounterController extends Controller
                     'phone'      => request('phone'),
                     'password'   => Hash::make(request('password')),
                 ];
+
                 User::create($data);
 
                 return response([
@@ -55,10 +57,12 @@ class CounterController extends Controller
                     'statusCode' => 201,
                     'message'    => 'Counter create successfully',
                     'data'       => CounterResource::make($counter->load('counter_managers')),
+                    // 'data'       => CounterResource::make($counter->load('counter_managers')),
                 ]);
             }
 
         } catch (Exception $e) {
+            // dd($e);
             return serverError($e);
         }
     }

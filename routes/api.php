@@ -43,6 +43,8 @@ Route::prefix('v1')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/file', [HelperController::class, 'fileUploader']);
+
+        //Super-Admin
         Route::apiResource('/companies', CompanyController::class);
         Route::post('/company-search', [CompanyController::class, 'search']);
         Route::apiResource('/company/{companyId}/users', UserController::class);
@@ -50,6 +52,8 @@ Route::prefix('v1')->group(function () {
         Route::patch('/company/{companyId}/users/suspend/{id}', [UserController::class, 'suspend']);
         Route::apiResource('/divisions', DivisionController::class);
         Route::apiResource('/divisions/{divisionId}/districts', DistrictController::class);
+
+        //Admin
         Route::apiResource('/counters', CounterController::class);
         Route::apiResource('/buses', BusController::class);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);

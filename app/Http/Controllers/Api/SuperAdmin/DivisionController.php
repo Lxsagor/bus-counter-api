@@ -13,10 +13,10 @@ class DivisionController extends Controller
     public function index()
     {
         try {
-            $divisions = DivisionResource::collection(Division::paginate())->response()->getData();
+            $divisions = Division::all();
             return response([
                 'status' => 'success',
-                'data'   => $divisions,
+                'data'   => DivisionResource::collection($divisions),
             ], 200);
 
         } catch (Exception $e) {

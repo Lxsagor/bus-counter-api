@@ -28,11 +28,11 @@ class CounterRequest extends FormRequest
         return [
             'division_id'  => 'required|exists:divisions,_id',
             'district_id'  => 'required|exists:districts,_id',
-            'name'         => 'required|regex:/^[a-zA-Z-. ]+$/u',
+            'name'         => 'required',
             'manager_name' => 'required|regex:/^[a-zA-Z-. ]+$/u',
             'phone'        => 'required|unique:users|regex:/(01[3-9]\d{8})$/',
             'password'     => 'required|min:6',
-            'go_through'   => 'required|array',
+            'go_through'   => 'array',
 
         ];
     }

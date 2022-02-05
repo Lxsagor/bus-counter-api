@@ -13,11 +13,11 @@ class DistrictController extends Controller
     public function index($divisionId)
     {
         try {
-            $districts = DistrictResource::collection(District::where('division_id', $divisionId)->paginate())->response()->getData();
+            $districts = District::all()->where('division_id', $divisionId);
 
             return response([
                 'status' => 'success',
-                'data'   => $districts,
+                'data'   => DistrictResource::collection($districts),
             ], 200);
 
         } catch (Exception $e) {
