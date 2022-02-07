@@ -21,7 +21,7 @@ class CounterResource extends JsonResource
             'name'             => $this->name,
             // 'manager_name'  => $this->manager_name,
             // 'manager_phone' => $this->manager_phone,
-            'go_through'       => $this->go_through,
+            // 'go_through'       => $this->go_through,
             'district'         => DistrictResource::make($this->whenLoaded('district')),
             'division'         => DivisionResource::make($this->whenLoaded('division')),
             'counter_managers' => UserResource::collection($this->whenLoaded('counter_managers')),

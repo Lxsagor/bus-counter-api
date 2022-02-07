@@ -159,7 +159,7 @@ class UserController extends Controller
 
                         ->paginate();
                 } else {
-                    $admins = User::paginate();
+                    $admins = User::where('company_id', $companyId)->where('role_id', User::ADMIN)->paginate();
                 }
 
                 return response([

@@ -13,7 +13,7 @@ class DivisionController extends Controller
     public function index()
     {
         try {
-            $divisions = Division::all();
+            $divisions = Division::get();
             return response([
                 'status' => 'success',
                 'data'   => DivisionResource::collection($divisions),

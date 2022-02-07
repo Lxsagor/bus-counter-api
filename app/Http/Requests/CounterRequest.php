@@ -32,7 +32,7 @@ class CounterRequest extends FormRequest
             'manager_name' => 'required|regex:/^[a-zA-Z-. ]+$/u',
             'phone'        => 'required|unique:users|regex:/(01[3-9]\d{8})$/',
             'password'     => 'required|min:6',
-            'go_through'   => 'array',
+            // 'go_through'   => 'array',
 
         ];
     }

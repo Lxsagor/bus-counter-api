@@ -13,7 +13,7 @@ class DistrictController extends Controller
     public function index($divisionId)
     {
         try {
-            $districts = District::all()->where('division_id', $divisionId);
+            $districts = District::where('division_id', $divisionId)->get();
 
             return response([
                 'status' => 'success',

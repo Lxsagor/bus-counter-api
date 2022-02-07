@@ -55,6 +55,7 @@ Route::prefix('v1')->group(function () {
 
         //Admin
         Route::apiResource('/counters', CounterController::class);
+        Route::post('/counters-search', [CounterController::class, 'search']);
         Route::apiResource('/buses', BusController::class);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
         Route::apiResource('/drivers', DriverController::class);

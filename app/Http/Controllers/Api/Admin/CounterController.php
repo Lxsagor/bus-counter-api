@@ -38,7 +38,7 @@ class CounterController extends Controller
                 'division_id' => request('division_id'),
                 'district_id' => request('district_id'),
                 'name'        => request('name'),
-                'go_through'  => request('go_through'),
+                // 'go_through'  => request('go_through'),
 
             ]);
             if ($counter) {
@@ -79,7 +79,7 @@ class CounterController extends Controller
                 $counter->name        = request('name') ?? $counter->name;
                 $counter->division_id = request('division_id') ?? $counter->division_id;
                 $counter->district_id = request('district_id') ?? $counter->district_id;
-                $counter->go_through  = request('go_through') ?? $counter->go_through;
+                // $counter->go_through  = request('go_through') ?? $counter->go_through;
 
                 $counter->update();
 
@@ -129,6 +129,36 @@ class CounterController extends Controller
             } else {
                 return itemNotFound();
             }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+    public function search()
+    {
+        try {
+
+            $counters = Counter::query();
+
+            if (request()->has('division_id')) {
+                $counters = $counters->where('division_id', request('division_id'));
+            }
+
+            if (request()->has('district_id')) {
+                $counters = $counters->orWhere('district_id', request('district_id'));
+            }
+
+            $counters = CounterResource::collection($counters->with(['district', 'division', 'counter_managers'])->paginate())->response()->getData();
+
+            // if ($counters) {
+            //     return $counters;
+            // } else {
+            //     $counters = Counter::paginate();
+            // }
+            return response([
+                'status' => 'success',
+                'data'   => $counters,
+            ], 200);
 
         } catch (Exception $e) {
             return serverError($e);

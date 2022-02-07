@@ -106,6 +106,7 @@ class BusController extends Controller
                 return response([
                     'status'  => 'success',
                     'message' => 'Bus deleted successfully',
+
                 ], 200);
             } else {
                 return itemNotFound();

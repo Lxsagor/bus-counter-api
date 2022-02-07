@@ -13,7 +13,7 @@ class Counter extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'go_through' => 'array',
+        // 'go_through' => 'array',
     ];
 
     public function district()
