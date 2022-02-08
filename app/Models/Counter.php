@@ -30,4 +30,8 @@ class Counter extends Model
     {
         return $this->hasMany(User::class);
     }
+    public function schedulesbuses()
+    {
+        return $this->hasMany(ScheduleBus::class);
+    }
 }

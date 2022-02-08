@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ScheduleBusRequest;
 use App\Http\Resources\ScheduleBusResource;
+use App\Models\Fare;
 use App\Models\ScheduleBus;
 use Exception;
 
@@ -14,7 +15,7 @@ class ScheduleBusController extends Controller
     {
         try {
 
-            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::paginate())->response()->getData();
+            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::with(['bus', 'counter'])->paginate())->response()->getData();
             return response([
                 'status' => 'success',
                 'data'   => $scheduleBuses,
@@ -35,9 +36,14 @@ class ScheduleBusController extends Controller
                 'end_counter_id'   => request('end_counter_id'),
                 'mid_counters_id'  => request('mid_counters_id'),
                 'date_time'        => request('date_time'),
-                // 'time'          => request('time'),
 
             ]);
+            if ($scheduleBus && request()->has('fares')) {
+                foreach (request('fares') as $fare) {
+                    $data = array_merge($fare, ['schedule_bus_id' => $scheduleBus->id]);
+                    Fare::create($data);
+                }
+            }
             return response([
                 'status'     => 'success',
                 'statusCode' => 201,
