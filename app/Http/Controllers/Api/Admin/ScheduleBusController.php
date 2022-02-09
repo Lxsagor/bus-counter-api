@@ -15,7 +15,7 @@ class ScheduleBusController extends Controller
     {
         try {
 
-            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::with(['bus', 'counter'])->paginate())->response()->getData();
+            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::with(['bus', 'counter', 'fare'])->paginate())->response()->getData();
             return response([
                 'status' => 'success',
                 'data'   => $scheduleBuses,

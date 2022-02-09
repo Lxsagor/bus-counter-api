@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\BusController;
+use App\Http\Controllers\Api\Admin\BusControllerGET;
 use App\Http\Controllers\Api\Admin\CounterController;
+use App\Http\Controllers\Api\Admin\CounterControllerGET;
 use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
 use App\Http\Controllers\Api\Admin\StaffController;
@@ -55,8 +57,10 @@ Route::prefix('v1')->group(function () {
 
         //Admin
         Route::apiResource('/counters', CounterController::class);
+        Route::apiResource('/counters-get', CounterControllerGET::class);
         Route::post('/counters-search', [CounterController::class, 'search']);
         Route::apiResource('/buses', BusController::class);
+        Route::apiResource('/buses-get', BusControllerGET::class);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);

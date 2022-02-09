@@ -30,7 +30,7 @@ class ScheduleBusRequest extends FormRequest
             'start_counter_id' => 'required|exists:counters,_id',
             'end_counter_id'   => 'required|exists:counters,_id',
             'mid_counters_id'  => 'array',
-            'date_time'        => 'required|date',
+            'date_time'        => 'required|date_format:Y-m-d H:i:s',
 
             // 'time'          => 'required|date_format:H:i',
 

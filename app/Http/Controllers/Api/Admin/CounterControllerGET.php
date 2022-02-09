@@ -11,16 +11,16 @@ use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
-class CounterController extends Controller
+class CounterControllerGET extends Controller
 {
     public function index()
     {
         try {
-            $counters = CounterResource::collection(Counter::with(['district', 'division', 'counter_managers'])->paginate())->response()->getData();
+            $counters = Counter::get();
 
             return response([
                 "status" => "success",
-                'data'   => $counters,
+                'data'   => CounterResource::collection($counters),
             ]);
 
         } catch (Exception $e) {

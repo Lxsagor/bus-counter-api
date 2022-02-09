@@ -15,16 +15,17 @@ class ScheduleBusResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'                   => $this->id,
-            'bus_id'               => $this->bus_id,
-            'bus_no'               => $this->bus_no,
-            'start_counter_id'     => $this->start_counter_id,
-            'end_counter_id'       => $this->end_counter_id,
-            'mid_counters_id'      => $this->mid_counters_id,
-            'date_time'            => $this->date_time,
-            'date_time_bangladesh' => $this->date_time_bangladesh,
-            'bus'                  => BusResource::make($this->whenLoaded('bus')),
-            'counter'              => CounterResource::make($this->whenLoaded('counter')),
+            'id'               => $this->id,
+            'bus_id'           => $this->bus_id,
+            'bus_no'           => $this->bus_no,
+            'start_counter_id' => $this->start_counter_id,
+            'end_counter_id'   => $this->end_counter_id,
+            'mid_counters_id'  => $this->mid_counters_id,
+            'date_time'        => $this->date_time,
+
+            'bus'              => BusResource::make($this->whenLoaded('bus')),
+            'counter'          => CounterResource::make($this->whenLoaded('counter')),
+            'fare'             => FareResource::collection($this->whenLoaded('fare')),
 
         ];
     }
