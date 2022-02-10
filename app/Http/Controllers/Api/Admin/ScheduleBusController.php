@@ -134,4 +134,5 @@ class ScheduleBusController extends Controller
             return serverError($e);
         }
     }
+
 }

@@ -7,6 +7,7 @@ use App\Http\Requests\LoginRequest;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use Exception;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class LoginController extends Controller
@@ -38,12 +39,15 @@ class LoginController extends Controller
     public function logout()
     {
         try {
-            auth()->user()->tokens()->delete();
+
+            $auth = Auth::user();
+
+            $auth->tokens()->delete();
+
             return response([
-                'status'     => 'success',
-                'statusCode' => 200,
-                'message'    => 'Successfully logout...',
-            ]);
+                'status'  => 'success',
+                'message' => 'Successfully logout...',
+            ], 200);
         } catch (Exception $e) {
             return serverError($e);
         }
