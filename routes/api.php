@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\CounterController;
 use App\Http\Controllers\Api\Admin\CounterControllerGET;
 use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
+use App\Http\Controllers\Api\Admin\ScheduleBusControllerGET;
 use App\Http\Controllers\Api\Admin\StaffController;
 use App\Http\Controllers\Api\Auth\ForgetPassController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -62,6 +63,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/buses', BusController::class);
         Route::apiResource('/buses-get', BusControllerGET::class);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
+        Route::apiResource('/schedulesbuses-get', ScheduleBusControllerGET::class);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
     });

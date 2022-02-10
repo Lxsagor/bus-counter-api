@@ -9,16 +9,16 @@ use App\Models\Fare;
 use App\Models\ScheduleBus;
 use Exception;
 
-class ScheduleBusController extends Controller
+class ScheduleBusControllerGET extends Controller
 {
     public function index()
     {
         try {
 
-            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::with(['bus', 'start_counter', 'end_counter', 'fares'])->paginate())->response()->getData();
+            $scheduleBuses = ScheduleBus::get();
             return response([
                 'status' => 'success',
-                'data'   => $scheduleBuses,
+                'data'   => ScheduleBusResource::collection($scheduleBuses),
             ], 200);
 
         } catch (Exception $e) {

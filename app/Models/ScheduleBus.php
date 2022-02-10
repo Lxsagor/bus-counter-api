@@ -29,11 +29,19 @@ class ScheduleBus extends Model
     {
         return $this->belongsTo(Bus::class);
     }
-    public function counter()
+    public function start_counter()
     {
-        return $this->belongsTo(Counter::class);
+        return $this->belongsTo(Counter::class, "start_counter_id", "_id");
     }
-    public function fare()
+    public function end_counter()
+    {
+        return $this->belongsTo(Counter::class, "end_counter_id", "_id");
+    }
+    public function mid_counters()
+    {
+        return $this->belongsTo(Counter::class, "mid_counters_id", "_id");
+    }
+    public function fares()
     {
         return $this->hasMany(Fare::class);
     }

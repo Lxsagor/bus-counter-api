@@ -40,7 +40,7 @@ class LoginController extends Controller
         try {
             auth()->user()->tokens()->delete();
             return response([
-                'status'     => 'done',
+                'status'     => 'success',
                 'statusCode' => 200,
                 'message'    => 'Successfully logout...',
             ]);
