@@ -52,4 +52,18 @@ class LoginController extends Controller
             return serverError($e);
         }
     }
+
+    // public function me()
+    // {
+    //     try {
+    //         $user = User::where('id', auth()->id())->first();
+    //         return response([
+    //             'status' => 'success',
+    //             'user'   => $user,
+    //         ], 200);
+    //     } catch (Exception $e) {
+    //         return serverError($e);
+    //     }
+    // }
+
 }

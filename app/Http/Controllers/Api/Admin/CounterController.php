@@ -164,4 +164,18 @@ class CounterController extends Controller
             return serverError($e);
         }
     }
+    public function get()
+    {
+        try {
+            $counters = Counter::get();
+
+            return response([
+                "status" => "success",
+                'data'   => CounterResource::collection($counters),
+            ]);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 }

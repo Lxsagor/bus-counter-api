@@ -1,12 +1,9 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\BusController;
-use App\Http\Controllers\Api\Admin\BusControllerGET;
 use App\Http\Controllers\Api\Admin\CounterController;
-use App\Http\Controllers\Api\Admin\CounterControllerGET;
 use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
-use App\Http\Controllers\Api\Admin\ScheduleBusControllerGET;
 use App\Http\Controllers\Api\Admin\StaffController;
 use App\Http\Controllers\Api\Auth\ForgetPassController;
 use App\Http\Controllers\Api\Auth\LoginController;
@@ -40,6 +37,7 @@ Route::prefix('v1')->group(function () {
 
         Route::middleware('auth:sanctum')->group(function () {
             Route::post('/logout', [LoginController::class, 'logout']);
+            Route::get('/me', [LoginController::class, 'me']);
         });
 
     });
@@ -58,12 +56,13 @@ Route::prefix('v1')->group(function () {
 
         //Admin
         Route::apiResource('/counters', CounterController::class);
-        Route::apiResource('/counters-get', CounterControllerGET::class);
+        Route::get('/counters-get', [CounterController::class, 'get']);
         Route::post('/counters-search', [CounterController::class, 'search']);
         Route::apiResource('/buses', BusController::class);
-        Route::apiResource('/buses-get', BusControllerGET::class);
+        Route::get('/buses-get', [BusController::class, 'get']);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
-        Route::apiResource('/schedulesbuses-get', ScheduleBusControllerGET::class);
+        Route::post('/schedulesbuses-search', [ScheduleBusController::class, 'search']);
+        Route::get('/schedulesbuses-get', [ScheduleBusController::class, 'get']);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
     });

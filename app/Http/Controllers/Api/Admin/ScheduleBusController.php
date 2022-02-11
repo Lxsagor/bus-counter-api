@@ -25,6 +25,20 @@ class ScheduleBusController extends Controller
             return serverError($e);
         }
     }
+    public function get()
+    {
+        try {
+
+            $scheduleBuses = ScheduleBus::get();
+            return response([
+                'status' => 'success',
+                'data'   => ScheduleBusResource::collection($scheduleBuses),
+            ], 200);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 
     public function store(ScheduleBusRequest $request)
     {
@@ -129,6 +143,28 @@ class ScheduleBusController extends Controller
             } else {
                 return itemNotFound();
             }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+    public function search()
+    {
+        try {
+            $data          = request('keyword');
+            $scheduleBuses = null;
+
+            if ($data) {
+                $scheduleBuses = ScheduleBus::where('date_time', 'like', "%{$data}%")
+                    ->paginate();
+            } else {
+                $scheduleBuses = ScheduleBus::paginate();
+            }
+
+            return response([
+                'status' => 'success',
+                'data'   => ScheduleBusResource::collection(ScheduleBus::with(['bus', 'start_counter', 'end_counter', 'fares'])->paginate())->response()->getData(),
+            ], 200);
 
         } catch (Exception $e) {
             return serverError($e);

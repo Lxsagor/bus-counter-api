@@ -116,4 +116,16 @@ class BusController extends Controller
             return serverError($e);
         }
     }
+    public function get()
+    {
+        try {
+            $buses = BUS::get();
+            return response([
+                'status' => 'success',
+                'data'   => BusResource::collection($buses),
+            ], 200);
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 }
