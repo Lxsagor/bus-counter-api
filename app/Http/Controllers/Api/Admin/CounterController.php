@@ -31,7 +31,7 @@ class CounterController extends Controller
     public function store(CounterRequest $request)
     {
         try {
-            // dd(User::COUNTER_MANAGER);
+            // dd(User::counter_managers);
 
             $counter = Counter::create([
                 'company_id'  => auth()->user()->company_id,
@@ -44,7 +44,7 @@ class CounterController extends Controller
             if ($counter) {
                 $data = [
                     'counter_id' => $counter->id,
-                    'role_id'    => User::COUNTER_MANAGER,
+                    'role_id'    => User::counter_managers,
                     'name'       => request('manager_name'),
                     'phone'      => request('phone'),
                     'password'   => Hash::make(request('password')),
@@ -57,7 +57,7 @@ class CounterController extends Controller
                     'statusCode' => 201,
                     'message'    => 'Counter create successfully',
                     'data'       => CounterResource::make($counter->load('counter_managers')),
-                    // 'data'       => CounterResource::make($counter->load('counter_managers')),
+                    // 'data'       => CounterResource::make($counter->load('counter_managerss')),
                 ]);
             }
 
@@ -76,6 +76,8 @@ class CounterController extends Controller
             $counter = Counter::where('_id', $id)->where('company_id', auth()->user()->company_id)->first();
             // dd($counter);
             if ($counter) {
+                dd($counter);
+                $user                 = User::where('counter_id', $counter->_id)->first();
                 $counter->name        = request('name') ?? $counter->name;
                 $counter->division_id = request('division_id') ?? $counter->division_id;
                 $counter->district_id = request('district_id') ?? $counter->district_id;
@@ -102,10 +104,11 @@ class CounterController extends Controller
     {
         try {
             $counter = Counter::where('_id', $id)->where('company_id', auth()->user()->company_id)->first();
+            // dd($counter);
             if ($counter) {
                 return response([
                     'status' => 'success',
-                    'data'   => CounterResource::make($counter),
+                    'data'   => CounterResource::make($counter->load(['district', 'division', 'counter_managers'])),
                 ], 200);
             } else {
                 return itemNotFound();

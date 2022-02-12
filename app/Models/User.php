@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -42,6 +43,6 @@ class User extends Authenticatable
 
     public function counter()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(Counter::class);
     }
 }

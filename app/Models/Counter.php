@@ -18,12 +18,12 @@ class Counter extends Model
 
     public function district()
     {
-        return $this->belongsTo(District::class);
+        return $this->belongsTo(District::class, "district_id", "_id");
     }
 
     public function division()
     {
-        return $this->belongsTo(Division::class);
+        return $this->belongsTo(Division::class, "division_id", "_id");
     }
 
     public function counter_managers()
