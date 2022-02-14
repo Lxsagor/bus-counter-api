@@ -14,7 +14,7 @@ class CompanyController extends Controller
     public function index()
     {
         try {
-            $companies = CompanyResource::collection(Company::paginate())->response()->getData();
+            $companies = CompanyResource::collection(Company::paginate(5))->response()->getData();
 
             return response([
                 'status' => 'success',

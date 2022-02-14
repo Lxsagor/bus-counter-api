@@ -24,6 +24,20 @@ class DistrictController extends Controller
             return serverError($e);
         }
     }
+    public function districts()
+    {
+        try {
+            $districts = District::get();
+
+            return response([
+                'status' => 'success',
+                'data'   => DistrictResource::collection($districts),
+            ], 200);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 
     public function store(DistrictRequest $request, $divisionId)
     {

@@ -15,11 +15,12 @@ class FareResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'                    => $this->id,
-            'schedule_bus_id'       => $this->schedule_bus_id,
-            'starting_counter_id'   => $this->starting_counter_id,
-            'destination_counte_id' => $this->destination_counte_id,
-            'fare'                  => $this->fare,
+            'id'                      => $this->id,
+            'starting_district_id'    => $this->starting_district_id,
+            'destination_district_id' => $this->destination_district_id,
+            'fare'                    => $this->fare,
+            'start_point'             => DistrictResource::make($this->whenLoaded('start_point')),
+            'destination_point'       => DistrictResource::make($this->whenLoaded('destination_point')),
 
         ];
     }

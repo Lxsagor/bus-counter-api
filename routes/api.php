@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\Admin\BusController;
 use App\Http\Controllers\Api\Admin\CounterController;
 use App\Http\Controllers\Api\Admin\DriverController;
+use App\Http\Controllers\Api\Admin\FareController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
 use App\Http\Controllers\Api\Admin\StaffController;
 use App\Http\Controllers\Api\Auth\ForgetPassController;
@@ -43,7 +44,6 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::middleware('auth:sanctum')->group(function () {
-        Route::post('/file', [HelperController::class, 'fileUploader']);
 
         //Super-Admin
         Route::apiResource('/companies', CompanyController::class);
@@ -51,8 +51,6 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/company/{companyId}/users', UserController::class);
         Route::post('/company/{companyId}/user-search', [UserController::class, 'search']);
         Route::patch('/company/{companyId}/users/suspend/{id}', [UserController::class, 'suspend']);
-        Route::apiResource('/divisions', DivisionController::class);
-        Route::apiResource('/divisions/{divisionId}/districts', DistrictController::class);
 
         //Admin
         Route::apiResource('/counters', CounterController::class);
@@ -63,7 +61,13 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
         Route::post('/schedulesbuses-search', [ScheduleBusController::class, 'search']);
         Route::get('/schedulesbuses-get', [ScheduleBusController::class, 'get']);
+        Route::apiResource('/fares', FareController::class);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
     });
+
+    Route::post('/file-uploader', [HelperController::class, 'fileUploader']);
+    Route::apiResource('/divisions', DivisionController::class);
+    Route::apiResource('/divisions/{divisionId}/districts', DistrictController::class);
+    Route::get('/districts', [DistrictController::class, 'districts']);
 });

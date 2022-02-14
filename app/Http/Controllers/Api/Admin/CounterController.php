@@ -44,7 +44,7 @@ class CounterController extends Controller
             if ($counter) {
                 $data = [
                     'counter_id' => $counter->id,
-                    'role_id'    => User::counter_managers,
+                    'role_id'    => User::COUNTER_MANAGER,
                     'name'       => request('manager_name'),
                     'phone'      => request('phone'),
                     'password'   => Hash::make(request('password')),

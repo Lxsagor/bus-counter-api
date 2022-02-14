@@ -10,18 +10,26 @@ class HelperController extends Controller
 {
     public function fileUploader(Request $request)
     {
-
         try {
+
             if (request()->has('file')) {
-                $folder    = $request->folder ?? 'all';
-                $image     = $request->file('file');
-                $imageName = $folder . "/" . time() . '.' . $image->getClientOriginalName();
-                $image->move(public_path('/uploads/' . $folder), $imageName);
-                $protocol = request()->secure();
+                $folder = request('folder') ?? 'all';
+                $file   = request('file');
+                // $fileType = explode('/', $file->getClientMimeType())[0];
+
+                $fileName = $folder . "/" . time() . '.' . $file->getClientOriginalName();
+                if (config('app.env') === 'production') {
+                    $file->move('uploads/' . $folder, $fileName);
+                } else {
+                    $file->move(public_path('/uploads/' . $folder), $fileName);
+                }
+
+                $protocol = request()->secure() ? 'https://' : 'http://';
+
                 return response([
                     'status'  => 'success',
                     'message' => 'File uploaded successfully',
-                    'data'    => $protocol ? 'https://' : 'http://' . $_SERVER['HTTP_HOST'] . '/uploads/' . $imageName,
+                    'data'    => $protocol . $_SERVER['HTTP_HOST'] . '/uploads/' . $fileName,
                 ], 200);
             }
         } catch (Exception $e) {

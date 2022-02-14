@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\Counter;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ScheduleBusResource extends JsonResource
@@ -14,7 +15,7 @@ class ScheduleBusResource extends JsonResource
      */
     public function toArray($request)
     {
-        return [
+        $data = [
             'id'               => $this->id,
             'bus_id'           => $this->bus_id,
             'bus_no'           => $this->bus_no,
@@ -23,12 +24,24 @@ class ScheduleBusResource extends JsonResource
             'mid_counters_id'  => $this->mid_counters_id,
             'date_time'        => $this->date_time,
 
-            'bus'              => BusResource::make($this->whenLoaded('bus')),
+            'bus'              => BusResource::make($this->whenLoaded('bus_by_no')),
             'start_counter'    => CounterResource::make($this->whenLoaded('start_counter')),
             'end_counter'      => CounterResource::make($this->whenLoaded('end_counter')),
-            'mid_counters'     => CounterResource::collection($this->whenLoaded('mid_counters')),
-            'fares'            => FareResource::collection($this->whenLoaded('fares')),
-
         ];
+
+        if ($this->mid_counters_id && count($this->mid_counters_id) > 0) {
+            $midCounters = [];
+            foreach ($this->mid_counters_id as $item) {
+                $counter = Counter::where('_id', $item)->first();
+
+                if ($counter) {
+                    array_push($midCounters, CounterResource::make($counter));
+                }
+            }
+
+            $data['mid_counters'] = $midCounters;
+        }
+
+        return $data;
     }
 }

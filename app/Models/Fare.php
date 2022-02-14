@@ -11,8 +11,14 @@ class Fare extends Model
     use HasFactory;
     protected $guarded = [];
 
-    public function schedule_bus()
+    public function start_point()
     {
-        return $this->belongsTo(ScheduleBus::class);
+        return $this->belongsTo(District::class, "starting_district_id", "_id");
     }
+
+    public function destination_point()
+    {
+        return $this->belongsTo(District::class, "destination_district_id", "_id");
+    }
+
 }

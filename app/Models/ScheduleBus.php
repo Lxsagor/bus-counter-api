@@ -29,6 +29,12 @@ class ScheduleBus extends Model
     {
         return $this->belongsTo(Bus::class);
     }
+
+    public function bus_by_no()
+    {
+        return $this->belongsTo(Bus::class, 'bus_no', 'bus_no');
+    }
+
     public function start_counter()
     {
         return $this->belongsTo(Counter::class, "start_counter_id", "_id");
@@ -41,8 +47,5 @@ class ScheduleBus extends Model
     {
         return $this->belongsTo(Counter::class, "mid_counters_id", "_id");
     }
-    public function fares()
-    {
-        return $this->hasMany(Fare::class);
-    }
+
 }
