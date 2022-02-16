@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Admin\DriverController;
 use App\Http\Controllers\Api\Admin\FareController;
 use App\Http\Controllers\Api\Admin\ScheduleBusController;
 use App\Http\Controllers\Api\Admin\StaffController;
+use App\Http\Controllers\Api\Admin\TrackController;
 use App\Http\Controllers\Api\Auth\ForgetPassController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegController;
@@ -64,6 +65,7 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/fares', FareController::class);
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
+        Route::apiResource('/tracks', TrackController::class);
     });
 
     Route::post('/file-uploader', [HelperController::class, 'fileUploader']);

@@ -36,6 +36,7 @@ class LoginController extends Controller
             return serverError($e);
         }
     }
+
     public function logout()
     {
         try {
@@ -60,7 +61,7 @@ class LoginController extends Controller
 
             return response([
                 'status' => 'success',
-                'user'   => $user,
+                'user'   => UserResource::make($user),
             ], 200);
         } catch (Exception $e) {
             return serverError($e);

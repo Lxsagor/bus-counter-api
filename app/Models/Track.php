@@ -6,20 +6,17 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
 
-class District extends Model
+class Track extends Model
 {
     use HasFactory;
-
     protected $guarded = [];
 
-    public function division()
+    protected $casts = [
+        'day_time' => 'datetime',
+        'route'    => 'array',
+    ];
+    public function districts()
     {
-        return $this->belongsTo(Division::class);
+        return $this->belongsTo(Counter::class, "route", "_id");
     }
-
-    public function tracks()
-    {
-        return $this->hasMany(Track::class);
-    }
-
 }
