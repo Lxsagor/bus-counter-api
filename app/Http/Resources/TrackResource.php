@@ -20,17 +20,17 @@ class TrackResource extends JsonResource
             'type'     => $this->type,
             'day_time' => $this->day_time,
         ];
-        if ($this->route && count($this->route) > 0) {
-            $districts = [];
-            foreach ($this->route as $item) {
-                $district = District::where('_id', $item)->first();
-                if ($district) {
-                    array_push($districts, DistrictResource::make($district));
-                }
-            }
+        // if ($this->route && count($this->route) > 0) {
+        //     $districts = [];
+        //     foreach ($this->route as $item) {
+        //         $district = District::where('_id', $item)->first();
+        //         if ($district) {
+        //             array_push($districts, DistrictResource::make($district));
+        //         }
+        //     }
 
-            $data['districts'] = $districts;
-        }
+        //     $data['districts'] = $districts;
+        // }
 
         return $data;
 

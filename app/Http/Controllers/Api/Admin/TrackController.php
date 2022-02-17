@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\TrackRequest;
+use App\Http\Resources\TrackResource;
 use App\Models\Track;
 use Exception;
 use Illuminate\Http\Request;
@@ -16,7 +18,17 @@ class TrackController extends Controller
      */
     public function index()
     {
-        //
+        try {
+
+            $tracks = TrackResource::collection(Track::paginate())->response()->getData();
+            return response([
+                'status' => 'success',
+                'data'   => $tracks,
+            ], 200);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
     }
 
     /**
@@ -36,16 +48,10 @@ class TrackController extends Controller
             $track = Track::create([
                 'company_id' => auth()->user()->company_id,
                 'route'      => request('route'),
-                'type'       => request('type'),
+                'bus_type'   => request('bus_type'),
+                'day_time'   => request('day_time'),
 
             ]);
-            if ($track && request()->has('day_time')) {
-                foreach (request('day_time') as $dayTime) {
-                    $data = array_merge($track, $dayTime);
-
-                }
-
-            }
             return response([
                 'status'     => 'success',
                 'statusCode' => 201,
@@ -67,7 +73,19 @@ class TrackController extends Controller
      */
     public function show($id)
     {
-        //
+        try {
+            $track = Track::where('_id', $id)->where('company_id', auth()->user()->company_id)->first();
+            if ($track) {
+                return response([
+                    'status' => 'success',
+                    'data'   => TrackResource::make($track),
+                ], 200);
+            } else {
+                return itemNotFound();
+            }
+        } catch (Exception $e) {
+            return serverError($e);
+        }
     }
 
     /**
@@ -88,9 +106,30 @@ class TrackController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(TrackRequest $request, $id)
     {
-        //
+        try {
+            $track = Track::where('_id', $id)->where('company_id', auth()->user()->company_id)->first();
+            if ($track) {
+
+                $track->route    = request('route') ?? $track->route;
+                $track->bus_type = request('bus_type') ?? $track->bus_type;
+                $track->day_time = request('day_time') ?? $track->day_time;
+
+                $track->update();
+                return response([
+                    'status'     => 'success',
+                    'statusCode' => 202,
+                    'message'    => 'Successfully update the track...',
+                    'data'       => TrackResource::make($track),
+                ]);
+            } else {
+                return itemNotFound();
+            }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
     }
 
     /**
@@ -101,6 +140,21 @@ class TrackController extends Controller
      */
     public function destroy($id)
     {
-        //
+        try {
+            $track = Track::where('_id', $id)->where('company_id', auth()->user()->company_id)->first();
+
+            if ($track) {
+                $track->delete();
+                return response([
+                    'status'  => 'success',
+                    'message' => 'Track deleted successfully',
+                ], 200);
+            } else {
+                return itemNotFound();
+            }
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
     }
 }

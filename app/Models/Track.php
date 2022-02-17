@@ -12,8 +12,8 @@ class Track extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'day_time' => 'datetime',
         'route'    => 'array',
+        'day_time' => 'array',
     ];
     public function districts()
     {
