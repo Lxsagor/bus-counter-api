@@ -27,8 +27,8 @@ class TrackRequest extends FormRequest
     {
         return [
             'route'    => 'required|array',
-            'type'     => 'required',
-            'day_time' => 'required|array',
+            'bus_type' => 'required',
+            'day_time' => 'array',
 
         ];
     }

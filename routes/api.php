@@ -10,6 +10,7 @@ use App\Http\Controllers\Api\Admin\TrackController;
 use App\Http\Controllers\Api\Auth\ForgetPassController;
 use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\Auth\RegController;
+use App\Http\Controllers\Api\Counter\BookingController;
 use App\Http\Controllers\Api\Helper\HelperController;
 use App\Http\Controllers\Api\SuperAdmin\CompanyController;
 use App\Http\Controllers\Api\SuperAdmin\DistrictController;
@@ -66,6 +67,10 @@ Route::prefix('v1')->group(function () {
         Route::apiResource('/drivers', DriverController::class);
         Route::apiResource('/staffs', StaffController::class);
         Route::apiResource('/tracks', TrackController::class);
+
+        //Counter
+        Route::post('/counter/route-search', [BookingController::class, 'track']);
+
     });
 
     Route::post('/file-uploader', [HelperController::class, 'fileUploader']);
