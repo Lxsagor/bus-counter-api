@@ -24,6 +24,20 @@ class DriverController extends Controller
             return serverError($e);
         }
     }
+    public function get()
+    {
+        try {
+
+            $drivers = Driver::get();
+            return response([
+                'status' => 'success',
+                'data'   => DriverResource::collection($drivers),
+            ], 200);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 
     public function store(DriverRequest $request)
     {

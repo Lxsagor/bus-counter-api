@@ -21,5 +21,9 @@ class District extends Model
     {
         return $this->hasMany(Track::class);
     }
+    public function assignBuses()
+    {
+        return $this->hasMany(AssignBus::class);
+    }
 
 }

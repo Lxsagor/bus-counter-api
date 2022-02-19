@@ -65,11 +65,16 @@ Route::prefix('v1')->group(function () {
         Route::get('/schedulesbuses-get', [ScheduleBusController::class, 'get']);
         Route::apiResource('/fares', FareController::class);
         Route::apiResource('/drivers', DriverController::class);
+        Route::get('/staffs-get', [StaffController::class, 'get']);
+        Route::get('/drivers-get', [DriverController::class, 'get']);
+
         Route::apiResource('/staffs', StaffController::class);
         Route::apiResource('/tracks', TrackController::class);
 
         //Counter
-        Route::post('/counter/route-search', [BookingController::class, 'track']);
+        Route::post('/counter/route-search', [BookingController::class, 'routeSearch']);
+        Route::get('/counter/routes', [BookingController::class, 'allroutes']);
+        Route::post('/counter/assignBus', [BookingController::class, 'assignBus']);
 
     });
 

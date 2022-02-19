@@ -23,7 +23,6 @@ class ScheduleBusResource extends JsonResource
             'end_counter_id'   => $this->end_counter_id,
             'mid_counters_id'  => $this->mid_counters_id,
             'date_time'        => $this->date_time,
-
             'bus'              => BusResource::make($this->whenLoaded('bus_by_no')),
             'start_counter'    => CounterResource::make($this->whenLoaded('start_counter')),
             'end_counter'      => CounterResource::make($this->whenLoaded('end_counter')),

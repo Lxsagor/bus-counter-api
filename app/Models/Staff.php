@@ -15,4 +15,9 @@ class Staff extends Model
     protected $casts = [
         'docs' => 'array',
     ];
+
+    public function assignBuses()
+    {
+        return $this->hasMany(AssignBus::class);
+    }
 }

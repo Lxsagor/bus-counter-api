@@ -25,6 +25,20 @@ class StaffController extends Controller
             return serverError($e);
         }
     }
+    public function get()
+    {
+        try {
+
+            $staffs = Staff::get();
+            return response([
+                'status' => 'success',
+                'data'   => StaffResource::collection($staffs),
+            ], 200);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
 
     public function store(StaffRequest $request)
     {
