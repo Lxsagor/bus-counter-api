@@ -26,14 +26,14 @@ class AssignBusRequest extends FormRequest
     public function rules()
     {
         return [
-            'route_id'         => 'required|unique:assign_buses|exists:tracks,_id',
-            'bus_no'           => 'required|exists:buses,bus_no',
-            'bus_type'         => 'required',
-            'driver_id'        => 'required|exists:drivers,_id',
-            'staff_id'         => 'required|exists:staff,_id',
-            'journey_start_id' => 'required|exists:districts,_id',
-            'journey_end_id'   => 'required|exists:districts,_id',
-            'date_time'        => 'required',
+            'track_id'  => 'required|unique:assign_buses|exists:tracks,_id',
+            'bus_no'    => 'required|exists:buses,bus_no',
+            'bus_type'  => 'required',
+            'driver_id' => 'required|exists:drivers,_id',
+            'staff_id'  => 'required|exists:staff,_id',
+            // 'journey_start_id' => 'required|exists:districts,_id',
+            // 'journey_end_id'   => 'required|exists:districts,_id',
+            // 'date_time'        => 'required',
 
         ];
     }

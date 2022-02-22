@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\CounterManager\AssignBusResource;
 use App\Models\District;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -16,10 +17,12 @@ class TrackResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'id'       => $this->id,
-            'route'    => $this->route,
-            'bus_type' => $this->bus_type,
-            'day_time' => $this->day_time,
+            'id'           => $this->id,
+            'route'        => $this->route,
+            'bus_type'     => $this->bus_type,
+            'day_time'     => $this->day_time,
+            'assign_buses' => AssignBusResource::collection($this->whenLoaded('assign_buses')),
+
         ];
         if ($this->route && count($this->route) > 0) {
             $routes = [];
