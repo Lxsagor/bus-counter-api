@@ -2,7 +2,7 @@
 
 namespace App\Http\Resources;
 
-use App\Models\Counter;
+use App\Models\District;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ScheduleBusResource extends JsonResource
@@ -16,29 +16,30 @@ class ScheduleBusResource extends JsonResource
     public function toArray($request)
     {
         $data = [
-            'id'               => $this->id,
-            'bus_id'           => $this->bus_id,
-            'bus_no'           => $this->bus_no,
-            'start_counter_id' => $this->start_counter_id,
-            'end_counter_id'   => $this->end_counter_id,
-            'mid_counters_id'  => $this->mid_counters_id,
-            'date_time'        => $this->date_time,
-            'bus'              => BusResource::make($this->whenLoaded('bus_by_no')),
-            'start_counter'    => CounterResource::make($this->whenLoaded('start_counter')),
-            'end_counter'      => CounterResource::make($this->whenLoaded('end_counter')),
+            'id'            => $this->id,
+            'bus_type'      => $this->bus_type,
+            'bus_seat_type' => $this->bus_seat_type,
+            // 'start_counter_id' => $this->start_counter_id,
+            // 'end_counter_id'   => $this->end_counter_id,
+            'routes_id'         => $this->routes_id,
+            'day_time'           => $this->day_time,
+            'fares'          => $this->fares,
+            // 'bus'           => BusResource::make($this->whenLoaded('bus_by_no')),
+            // 'start_counter' => CounterResource::make($this->whenLoaded('start_counter')),
+            // 'end_counter'   => CounterResource::make($this->whenLoaded('end_counter')),
         ];
 
-        if ($this->mid_counters_id && count($this->mid_counters_id) > 0) {
+        if ($this->routes_id && count($this->routes_id) > 0) {
             $midCounters = [];
-            foreach ($this->mid_counters_id as $item) {
-                $counter = Counter::where('_id', $item)->first();
+            foreach ($this->routes_id as $item) {
+                $district = District::where('_id', $item)->first();
 
-                if ($counter) {
-                    array_push($midCounters, CounterResource::make($counter));
+                if ($district) {
+                    array_push($midCounters, DistrictResource::make($district));
                 }
             }
 
-            $data['mid_counters'] = $midCounters;
+            $data['routes'] = $midCounters;
         }
 
         return $data;

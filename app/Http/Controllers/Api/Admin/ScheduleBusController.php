@@ -14,16 +14,17 @@ class ScheduleBusController extends Controller
     {
         try {
 
-            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::with(['bus_by_no', 'start_counter', 'end_counter'])->paginate())->response()->getData();
+            $scheduleBuses = ScheduleBusResource::collection(ScheduleBus::paginate())->response()->getData();
             return response([
                 'status' => 'success',
-                'data'   => $scheduleBuses,
+                'data' => $scheduleBuses,
             ], 200);
 
         } catch (Exception $e) {
             return serverError($e);
         }
     }
+
     public function get()
     {
         try {
@@ -31,7 +32,7 @@ class ScheduleBusController extends Controller
             $scheduleBuses = ScheduleBus::get();
             return response([
                 'status' => 'success',
-                'data'   => ScheduleBusResource::collection($scheduleBuses),
+                'data' => ScheduleBusResource::collection($scheduleBuses),
             ], 200);
 
         } catch (Exception $e) {
@@ -43,12 +44,13 @@ class ScheduleBusController extends Controller
     {
         try {
             $scheduleBus = ScheduleBus::create([
-                'bus_id'           => request('bus_id'),
-                'bus_no'           => request('bus_no'),
-                'start_counter_id' => request('start_counter_id'),
-                'end_counter_id'   => request('end_counter_id'),
-                'mid_counters_id'  => request('mid_counters_id'),
-                'date_time'        => request('date_time'),
+                'bus_type' => request('bus_type'),
+                'bus_seat_type' => request('bus_seat_type'),
+                // 'start_counter_id' => request('start_counter_id'),
+                // 'end_counter_id'   => request('end_counter_id'),
+                'routes_id' => request('routes_id'),
+                'day_time' => request('day_time'),
+                'fares' => request('fares'),
 
             ]);
             // if ($scheduleBus && request()->has('fares')) {
@@ -59,10 +61,10 @@ class ScheduleBusController extends Controller
 
             // }
             return response([
-                'status'     => 'success',
+                'status' => 'success',
                 'statusCode' => 201,
-                'message'    => 'Successfully added the schedule of the bus...',
-                'data'       => ScheduleBusResource::make($scheduleBus),
+                'message' => 'Successfully added the schedule of the bus...',
+                'data' => ScheduleBusResource::make($scheduleBus),
             ]);
         } catch (Exception $e) {
             return serverError($e);
@@ -77,21 +79,21 @@ class ScheduleBusController extends Controller
 
             if ($scheduleBus) {
 
-                $scheduleBus->bus_id           = request('bus_id') ?? $scheduleBus->bus_id;
-                $scheduleBus->bus_no           = request('bus_no') ?? $scheduleBus->bus_no;
-                $scheduleBus->start_counter_id = request('start_counter_id') ?? $scheduleBus->start_counter_id;
-                $scheduleBus->end_counter_id   = request('end_counter_id') ?? $scheduleBus->end_counter_id;
-                $scheduleBus->mid_counters_id  = request('mid_counters_id') ?? $scheduleBus->mid_counters_id;
-                $scheduleBus->date_time        = request('date_time') ?? $scheduleBus->date_time;
+                $scheduleBus->bus_type = request('bus_type') ?? $scheduleBus->bus_type;
+                $scheduleBus->bus_seat_type = request('bus_seat_type') ?? $scheduleBus->bus_seat_type;
+                $scheduleBus->routes_id = request('routes_id') ?? $scheduleBus->routes_id;
+                $scheduleBus->day = request('day') ?? $scheduleBus->day;
+                $scheduleBus->time = request('time') ?? $scheduleBus->time;
+                $scheduleBus->fares = request('fares') ?? $scheduleBus->fares;
                 // $scheduleBus->time          = request('time') ?? $scheduleBus->time;
 
                 $scheduleBus->update();
 
                 return response([
-                    'status'     => 'success',
+                    'status' => 'success',
                     'statusCode' => 202,
-                    'message'    => 'Successfully update schedule...',
-                    'data'       => ScheduleBusResource::make($scheduleBus),
+                    'message' => 'Successfully update schedule...',
+                    'data' => ScheduleBusResource::make($scheduleBus),
                 ]);
 
             } else {
@@ -107,12 +109,12 @@ class ScheduleBusController extends Controller
     {
         try {
 
-            $scheduleBus = ScheduleBus::with(['bus_by_no', 'start_counter', 'end_counter'])->where('_id', $id)->first();
+            $scheduleBus = ScheduleBus::where('_id', $id)->first();
 
             if ($scheduleBus) {
                 return response([
                     'status' => 'success',
-                    'data'   => ScheduleBusResource::make($scheduleBus),
+                    'data' => ScheduleBusResource::make($scheduleBus),
                 ], 200);
 
             } else {
@@ -135,7 +137,7 @@ class ScheduleBusController extends Controller
                 $scheduleBus->delete();
 
                 return response([
-                    'status'  => 'success',
+                    'status' => 'success',
                     'message' => 'Schedule  deleted successfully',
                 ], 200);
 
@@ -147,10 +149,11 @@ class ScheduleBusController extends Controller
             return serverError($e);
         }
     }
+
     public function search()
     {
         try {
-            $data          = request('keyword');
+            $data = request('keyword');
             $scheduleBuses = null;
 
             if ($data) {
@@ -162,7 +165,7 @@ class ScheduleBusController extends Controller
 
             return response([
                 'status' => 'success',
-                'data'   => ScheduleBusResource::collection(ScheduleBus::with(['bus_by_no', 'start_counter', 'end_counter', 'fares'])->paginate())->response()->getData(),
+                'data' => ScheduleBusResource::collection(ScheduleBus::with(['bus_by_no', 'start_counter', 'end_counter', 'fares'])->paginate())->response()->getData(),
             ], 200);
 
         } catch (Exception $e) {

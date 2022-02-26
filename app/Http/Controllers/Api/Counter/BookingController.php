@@ -19,7 +19,7 @@ class BookingController extends Controller
             $tracks = Track::get();
             return response([
                 'status' => 'success',
-                'data'   => TrackResource::collection($tracks->load('assign_buses')),
+                'data'   => TrackResource::collection($tracks->load('assign_buses.bus_by_no')),
 
             ], 200);
 

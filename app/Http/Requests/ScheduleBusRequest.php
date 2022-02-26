@@ -26,10 +26,12 @@ class ScheduleBusRequest extends FormRequest
     public function rules()
     {
         return [
-            'bus_no'           => 'required|exists:buses,bus_no',
-            'start_counter_id' => 'required|exists:counters,_id',
-            'end_counter_id'   => 'required|exists:counters,_id',
-            'mid_counters_id'  => 'array',
+            'bus_type' => 'required',
+            'bus_seat_type' => 'required',
+            'routes_id' => 'required|array',
+            'fares' => 'required|array',
+            'day_time' => 'required|array',
+//            'time' => 'required',
 //            'date_time'        => 'required|date_format:Y-m-d H:i:s',
 
             // 'time'          => 'required|date_format:H:i',
