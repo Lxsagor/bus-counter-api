@@ -119,7 +119,19 @@ class BusController extends Controller
     public function get()
     {
         try {
-            $buses = BUS::get();
+            $buses = Bus::get();
+            return response([
+                'status' => 'success',
+                'data'   => BusResource::collection($buses),
+            ], 200);
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+    public function getBusByType($type)
+    {
+        try {
+            $buses = Bus::where('bus_type', $type)->get();
             return response([
                 'status' => 'success',
                 'data'   => BusResource::collection($buses),

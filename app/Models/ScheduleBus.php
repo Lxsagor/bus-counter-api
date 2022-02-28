@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\CounterManager\AssignBus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 // use Illuminate\Database\Eloquent\Model;
@@ -14,9 +15,9 @@ class ScheduleBus extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'route' => 'array',
-        'fare' => 'array',
-        'day_time' => 'array'
+        'route'    => 'array',
+        'fare'     => 'array',
+        'day_time' => 'array',
     ];
 
     // protected $appends = ['date_time_bangladesh'];
@@ -48,6 +49,10 @@ class ScheduleBus extends Model
     public function routes()
     {
         return $this->belongsTo(District::class, "routes_id", "_id");
+    }
+    public function assign_buses()
+    {
+        return $this->hasMany(AssignBus::class, 'route_id', '_id');
     }
 
 }

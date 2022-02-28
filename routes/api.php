@@ -60,6 +60,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/counters-search', [CounterController::class, 'search']);
         Route::apiResource('/buses', BusController::class);
         Route::get('/buses-get', [BusController::class, 'get']);
+        Route::get('/buses-by-type/{type}', [BusController::class, 'getBusByType']);
         Route::apiResource('/schedulesbuses', ScheduleBusController::class);
         Route::post('/schedulesbuses-search', [ScheduleBusController::class, 'search']);
         Route::get('/schedulesbuses-get', [ScheduleBusController::class, 'get']);

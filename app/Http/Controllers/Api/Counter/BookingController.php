@@ -5,9 +5,9 @@ namespace App\Http\Controllers\Api\Counter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CounterManager\AssignBusRequest;
 use App\Http\Resources\CounterManager\AssignBusResource;
-use App\Http\Resources\TrackResource;
+use App\Http\Resources\ScheduleBusResource;
 use App\Models\CounterManager\AssignBus;
-use App\Models\Track;
+use App\Models\ScheduleBus;
 use Exception;
 
 class BookingController extends Controller
@@ -16,11 +16,12 @@ class BookingController extends Controller
     {
         try {
 
-            $tracks = Track::get();
+            $scheduleBuses = ScheduleBus::with(['assign_buses'])->get();
+            // dd($scheduleBuses);
             return response([
                 'status' => 'success',
-                'data'   => TrackResource::collection($tracks->load('assign_buses.bus_by_no')),
-
+                // 'data'   => $scheduleBuses,
+                'data'   => ScheduleBusResource::collection($scheduleBuses),
             ], 200);
 
         } catch (Exception $e) {
@@ -32,11 +33,11 @@ class BookingController extends Controller
     {
         try {
 
-            $tracks = Track::whereIn('route', [request('start_location'), request('end_location')])->get();
+            $scheduleBuses = ScheduleBus::whereIn('routes_id', [request('start_location'), request('end_location')])->get();
 
             return response([
                 'status' => 'success',
-                'data'   => TrackResource::collection($tracks->load('assign_bus')),
+                'data'   => ScheduleBusResource::collection($scheduleBuses),
             ]);
         } catch (Exception $e) {
             return serverError($e);
@@ -48,15 +49,16 @@ class BookingController extends Controller
         try {
             $assign = AssignBus::create([
                 'counter_id' => auth()->user()->counter_id,
-                'track_id'   => request('track_id'),
+                'route_id'   => request('route_id'),
                 'bus_no'     => request('bus_no'),
                 'bus_type'   => request('bus_type'),
                 'driver_id'  => request('driver_id'),
                 'staff_id'   => request('staff_id'),
-                'supervisor' => request('supervisor'),
+                'time'       => request('time'),
+
+                // 'supervisor' => request('supervisor'),
                 // 'journey_start_id' => request('journey_start_id'),
                 // 'journey_end_id'   => request('journey_end_id'),
-                // 'date_time'        => request('date_time'),
 
             ]);
             return response([

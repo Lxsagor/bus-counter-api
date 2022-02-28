@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Http\Resources\CounterManager\AssignBusResource;
 use App\Models\District;
 use Illuminate\Http\Resources\Json\JsonResource;
 
@@ -21,12 +22,13 @@ class ScheduleBusResource extends JsonResource
             'bus_seat_type' => $this->bus_seat_type,
             // 'start_counter_id' => $this->start_counter_id,
             // 'end_counter_id'   => $this->end_counter_id,
-            'routes_id'         => $this->routes_id,
-            'day_time'           => $this->day_time,
-            'fares'          => $this->fares,
+            'routes_id'     => $this->routes_id,
+            'day_time'      => $this->day_time,
+            'fares'         => $this->fares,
             // 'bus'           => BusResource::make($this->whenLoaded('bus_by_no')),
             // 'start_counter' => CounterResource::make($this->whenLoaded('start_counter')),
             // 'end_counter'   => CounterResource::make($this->whenLoaded('end_counter')),
+            'assignBuses'   => AssignBusResource::collection($this->whenLoaded('assign_buses')),
         ];
 
         if ($this->routes_id && count($this->routes_id) > 0) {

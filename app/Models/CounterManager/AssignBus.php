@@ -6,7 +6,6 @@ use App\Models\Bus;
 use App\Models\District;
 use App\Models\Driver;
 use App\Models\Staff;
-use App\Models\Track;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 // use Illuminate\Database\Eloquent\Model;
 use Jenssegers\Mongodb\Eloquent\Model;
@@ -43,9 +42,9 @@ class AssignBus extends Model
         return $this->belongsTo(Bus::class, "bus_no", "bus_no");
     }
 
-    public function track()
+    public function schedule_bus()
     {
-        return $this->belongsTo(Track::class);
+        return $this->belongsTo(ScheduleBus::class, "route_id", "_id");
     }
 
 }
