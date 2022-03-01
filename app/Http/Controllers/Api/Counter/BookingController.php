@@ -8,6 +8,7 @@ use App\Http\Resources\CounterManager\AssignBusResource;
 use App\Http\Resources\ScheduleBusResource;
 use App\Models\CounterManager\AssignBus;
 use App\Models\ScheduleBus;
+use Carbon\Carbon;
 use Exception;
 
 class BookingController extends Controller
@@ -32,12 +33,27 @@ class BookingController extends Controller
     public function routeSearch()
     {
         try {
+            $day = Carbon::parse(request('journey_date'))->englishDayOfWeek;
 
             $scheduleBuses = ScheduleBus::whereIn('routes_id', [request('start_location'), request('end_location')])->get();
 
+            $routes = [];
+
+            if (count($scheduleBuses) > 0) {
+
+                $scheduleBuses->each(function ($item) use ($day) {
+                    dd($item->day_time);
+                    foreach (json_decode($item->day_time) as $dayTime) {
+                        if (str_contains($dayTime['day'], strtolower($day))) {
+                            array_push($routes, $item);
+                        }
+                    }
+                });
+            }
+
             return response([
                 'status' => 'success',
-                'data'   => ScheduleBusResource::collection($scheduleBuses),
+                'data'   => ScheduleBusResource::collection($routes),
             ]);
         } catch (Exception $e) {
             return serverError($e);
