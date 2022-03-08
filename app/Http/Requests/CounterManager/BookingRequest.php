@@ -24,7 +24,15 @@ class BookingRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'seat_no' => 'required',
+            'fare'    => 'required',
+
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(
+            validateError($validator->errors())
+        );
     }
 }

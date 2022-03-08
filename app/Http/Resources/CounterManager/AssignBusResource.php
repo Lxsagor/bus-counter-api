@@ -3,6 +3,7 @@
 namespace App\Http\Resources\CounterManager;
 
 use App\Http\Resources\BusResource;
+use App\Http\Resources\CounterManager\TicketBookResource;
 use App\Http\Resources\DriverResource;
 use App\Http\Resources\StaffResource;
 use Illuminate\Http\Resources\Json\JsonResource;
@@ -18,22 +19,22 @@ class AssignBusResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'        => $this->id,
-            'bus_no'    => $this->bus_no,
-            'bus_type'  => $this->bus_type,
-            'driver_id' => $this->driver_id,
-            'staff_id'  => $this->staff_id,
+            'id'           => $this->id,
+            'bus_no'       => $this->bus_no,
+            'bus_type'     => $this->bus_type,
+            'driver_id'    => $this->driver_id,
+            'staff_id'     => $this->staff_id,
             // 'supervisor' => $this->supervisor,
             // 'journey_start_id' => $this->journey_start_id,
             // 'journey_end_id'   => $this->journey_end_id,
-            'time'      => $this->time,
+            'time'         => $this->time,
 
-            'bus'       => BusResource::make($this->whenLoaded('bus_by_no')),
+            'bus'          => BusResource::make($this->whenLoaded('bus_by_no')),
             // 'journey_start'    => DistrictResource::make($this->whenLoaded('journey_start')),
             // 'journey_end'      => DistrictResource::make($this->whenLoaded('journey_end')),
-            'driver'    => DriverResource::make($this->whenLoaded('driver')),
-            'staff'     => StaffResource::make($this->whenLoaded('staff')),
-
+            'driver'       => DriverResource::make($this->whenLoaded('driver')),
+            'staff'        => StaffResource::make($this->whenLoaded('staff')),
+            'ticket_books' => TicketBookResource::collection($this->whenLoaded('ticket_books')),
         ];
     }
 }

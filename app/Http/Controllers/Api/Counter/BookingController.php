@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Api\Counter;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CounterManager\AssignBusRequest;
 use App\Http\Resources\CounterManager\AssignBusResource;
+use App\Http\Resources\CounterManager\TicketBookResource;
 use App\Http\Resources\ScheduleBusResource;
 use App\Models\CounterManager\AssignBus;
+use App\Models\CounterManager\TicketBook;
 use App\Models\ScheduleBus;
 use Carbon\Carbon;
 use Exception;
@@ -17,7 +19,7 @@ class BookingController extends Controller
     {
         try {
 
-            $scheduleBuses = ScheduleBus::with(['assign_buses'])->get();
+            $scheduleBuses = ScheduleBus::with(['assign_buses.bus_by_no'])->get();
             // dd($scheduleBuses);
             return response([
                 'status' => 'success',
@@ -35,20 +37,21 @@ class BookingController extends Controller
         try {
             $day = Carbon::parse(request('journey_date'))->englishDayOfWeek;
 
-            $scheduleBuses = ScheduleBus::whereIn('routes_id', [request('start_location'), request('end_location')])->get();
+            $scheduleBuses = ScheduleBus::with(['assign_buses.bus_by_no', 'assign_buses.ticket_books'])
+                ->whereIn('routes_id', [request('start_location')])
+                ->whereIn('routes_id', [request('end_location')])
+                ->get();
 
             $routes = [];
 
             if (count($scheduleBuses) > 0) {
-
-                $scheduleBuses->each(function ($item) use ($day) {
-                    dd($item->day_time);
-                    foreach (json_decode($item->day_time) as $dayTime) {
-                        if (str_contains($dayTime['day'], strtolower($day))) {
-                            array_push($routes, $item);
+                foreach ($scheduleBuses as $item) {
+                    foreach ($item->day_time as $dayTime) {
+                        if ($dayTime['day'] === strtolower($day)) {
+                            $routes[] = $item;
                         }
                     }
-                });
+                }
             }
 
             return response([
@@ -82,6 +85,34 @@ class BookingController extends Controller
                 'statusCode' => 201,
                 'message'    => 'Successfully Assigned Bus...',
                 'data'       => AssignBusResource::make($assign->load('bus_by_no', 'driver', 'staff')),
+            ]);
+
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+
+    public function ticketBooking()
+    {
+        try {
+
+            $ticketBooking = TicketBook::create([
+                'counter_id'   => auth()->user()->counter_id,
+                'seat_no'      => request('seat_no'),
+                'fare'         => request('fare'),
+                'name'         => request('name'),
+                'phone'        => request('phone'),
+                'coach_id'     => request('coach_id'),
+                'route_id'     => request('route_id'),
+                'journey_time' => request('journey_time'),
+                'PNR'          => "DTR" . "-" . mt_rand(100000000, 999999999),
+            ]);
+
+            return response([
+                'status'  => 'success',
+                'message' => 'Ticket booked successfully',
+                'data'    => TicketBookResource::make($ticketBooking->load('assign_bus', 'schedule_bus')),
+                // 'data'    => TicketBookResource::make($ticketBooking),
             ]);
 
         } catch (Exception $e) {

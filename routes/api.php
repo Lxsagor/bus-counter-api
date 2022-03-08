@@ -76,6 +76,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/counter/route-search', [BookingController::class, 'routeSearch']);
         Route::get('/counter/routes', [BookingController::class, 'allroutes']);
         Route::post('/counter/assignBus', [BookingController::class, 'assignBus']);
+        Route::post('/counter/ticketBooking', [BookingController::class, 'ticketBooking']);
 
     });
 

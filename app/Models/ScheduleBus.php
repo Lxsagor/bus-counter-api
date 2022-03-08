@@ -54,4 +54,8 @@ class ScheduleBus extends Model
     {
         return $this->hasMany(AssignBus::class, 'route_id', '_id');
     }
+    public function ticket_books()
+    {
+        return $this->hasMany(TicketBook::class, 'route_id', '_id');
+    }
 }
