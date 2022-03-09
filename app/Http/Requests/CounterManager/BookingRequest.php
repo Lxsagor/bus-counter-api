@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\CounterManager;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class BookingRequest extends FormRequest
 {
@@ -26,6 +28,7 @@ class BookingRequest extends FormRequest
         return [
             'seat_no' => 'required',
             'fare'    => 'required',
+            'phone'   => 'required|regex:/(01[3-9]\d{8})$/',
 
         ];
     }

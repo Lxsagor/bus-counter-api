@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\Counter;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CounterManager\AssignBusRequest;
+use App\Http\Requests\CounterManager\BookingRequest;
 use App\Http\Resources\CounterManager\AssignBusResource;
 use App\Http\Resources\CounterManager\TicketBookResource;
 use App\Http\Resources\ScheduleBusResource;
@@ -92,7 +93,7 @@ class BookingController extends Controller
         }
     }
 
-    public function ticketBooking()
+    public function ticketBooking(BookingRequest $request)
     {
         try {
 
@@ -115,6 +116,24 @@ class BookingController extends Controller
                 // 'data'    => TicketBookResource::make($ticketBooking),
             ]);
 
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+    public function searchTicket()
+    {
+        try {
+            $ticket = TicketBook::with(['assign_bus', 'schedule_bus'])->where('PNR', request('pnr'))->first();
+
+            if ($ticket) {
+                return response([
+                    'status'     => 'success',
+                    'statusCode' => 200,
+                    'data'       => TicketBookResource::make($ticket),
+                ]);
+            } else {
+                return itemNotFound();
+            }
         } catch (Exception $e) {
             return serverError($e);
         }

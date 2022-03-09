@@ -24,6 +24,7 @@ class TicketBookResource extends JsonResource
             'coach_id  '     => $this->coach_id,
             'route_id  '     => $this->route_id,
             'journey_time  ' => $this->journey_time,
+            'PNR'            => $this->PNR,
 
             'coach'          => AssignBusResource::make($this->whenLoaded('assign_bus')),
             'route'          => ScheduleBusResource::make($this->whenLoaded('schedule_bus')),
