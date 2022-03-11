@@ -16,18 +16,18 @@ class TicketBookResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id'             => $this->id,
-            'seat_no'        => $this->seat_no,
-            'fare  '         => $this->fare,
-            'name  '         => $this->name,
-            'phone  '        => $this->phone,
-            'coach_id  '     => $this->coach_id,
-            'route_id  '     => $this->route_id,
-            'journey_time  ' => $this->journey_time,
-            'PNR'            => $this->PNR,
-
-            'coach'          => AssignBusResource::make($this->whenLoaded('assign_bus')),
-            'route'          => ScheduleBusResource::make($this->whenLoaded('schedule_bus')),
+            'id'           => $this->id,
+            'seat_no'      => $this->seat_no,
+            'fare'         => $this->fare,
+            'name'         => $this->name,
+            'phone'        => $this->phone,
+            'coach_id'     => $this->coach_id,
+            'route_id'     => $this->route_id,
+            'journey_time' => $this->journey_time,
+            'PNR'          => $this->PNR,
+            'status'       => $this->status,
+            'assignBuses'  => AssignBusResource::make($this->whenLoaded('assign_bus')),
+            'route'        => ScheduleBusResource::make($this->whenLoaded('schedule_bus')),
         ];
     }
 }

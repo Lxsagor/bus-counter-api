@@ -17,7 +17,8 @@ class AssignBus extends Model
     protected $guarded = [];
 
     protected $casts = [
-        'date_time' => 'datetime',
+        'time' => 'datetime',
+        'date' => 'date',
     ];
 
     public function journey_start()

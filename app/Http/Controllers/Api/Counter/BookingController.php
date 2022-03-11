@@ -38,7 +38,15 @@ class BookingController extends Controller
         try {
             $day = Carbon::parse(request('journey_date'))->englishDayOfWeek;
 
-            $scheduleBuses = ScheduleBus::with(['assign_buses.bus_by_no', 'assign_buses.ticket_books'])
+            $scheduleBuses = ScheduleBus::with([
+                'assign_buses'              => function ($query) {
+                    $query->where('date', Carbon::parse(request('journey_date')));
+                },
+                'assign_buses.bus_by_no',
+                'assign_buses.ticket_books' => function ($query) {
+                    $query->where('status', 'active');
+                },
+            ])
                 ->whereIn('routes_id', [request('start_location')])
                 ->whereIn('routes_id', [request('end_location')])
                 ->get();
@@ -67,6 +75,7 @@ class BookingController extends Controller
     public function assignBus(AssignBusRequest $request)
     {
         try {
+
             $assign = AssignBus::create([
                 'counter_id' => auth()->user()->counter_id,
                 'route_id'   => request('route_id'),
@@ -75,6 +84,7 @@ class BookingController extends Controller
                 'driver_id'  => request('driver_id'),
                 'staff_id'   => request('staff_id'),
                 'time'       => request('time'),
+                'date'       => request('date'),
 
                 // 'supervisor' => request('supervisor'),
                 // 'journey_start_id' => request('journey_start_id'),
@@ -107,6 +117,7 @@ class BookingController extends Controller
                 'route_id'     => request('route_id'),
                 'journey_time' => request('journey_time'),
                 'PNR'          => "DTR" . "-" . mt_rand(100000000, 999999999),
+                'status'       => "active",
             ]);
 
             return response([
@@ -123,7 +134,7 @@ class BookingController extends Controller
     public function searchTicket()
     {
         try {
-            $ticket = TicketBook::with(['assign_bus', 'schedule_bus'])->where('PNR', request('pnr'))->first();
+            $ticket = TicketBook::with(['schedule_bus', 'assign_bus.bus_by_no', 'assign_bus.ticket_books'])->where('PNR', request('pnr'))->where('status', "active")->first();
 
             if ($ticket) {
                 return response([
@@ -131,6 +142,26 @@ class BookingController extends Controller
                     'statusCode' => 200,
                     'data'       => TicketBookResource::make($ticket),
                 ]);
+            } else {
+                return itemNotFound();
+            }
+        } catch (Exception $e) {
+            return serverError($e);
+        }
+    }
+    public function cancelTicket()
+    {
+        try {
+            $ticket = TicketBook::where('PNR', request('pnr'))->where('status', "active")->first();
+            if ($ticket) {
+                $ticket->status = 'cancel';
+                $ticket->update();
+                return response([
+                    'status'  => 'success',
+                    'message' => 'Ticket canceled successfully',
+                    // 'data'    => TicketBookResource::make($ticket),
+                ]);
+
             } else {
                 return itemNotFound();
             }

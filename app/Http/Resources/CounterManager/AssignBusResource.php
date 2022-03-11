@@ -28,6 +28,7 @@ class AssignBusResource extends JsonResource
             // 'journey_start_id' => $this->journey_start_id,
             // 'journey_end_id'   => $this->journey_end_id,
             'time'         => $this->time,
+            'date'         => $this->date,
 
             'bus'          => BusResource::make($this->whenLoaded('bus_by_no')),
             // 'journey_start'    => DistrictResource::make($this->whenLoaded('journey_start')),

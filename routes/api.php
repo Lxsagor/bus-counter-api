@@ -78,6 +78,7 @@ Route::prefix('v1')->group(function () {
         Route::post('/counter/assignBus', [BookingController::class, 'assignBus']);
         Route::post('/counter/ticketBooking', [BookingController::class, 'ticketBooking']);
         Route::post('/counter/ticket-search', [BookingController::class, 'searchTicket']);
+        Route::post('/counter/cancel-ticket', [BookingController::class, 'cancelTicket']);
 
     });
 
